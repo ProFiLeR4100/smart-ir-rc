@@ -1,0 +1,10 @@
+# IntellijIdea files
+*.iml
+.idea
+
+# Node.JS files
+node_modules
+
+# MongooseOS files 
+build
+fs
