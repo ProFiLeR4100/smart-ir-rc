@@ -8,3 +8,6 @@ node_modules
 # MongooseOS files 
 build
 fs
+
+# Intermediate files
+src/styles/styles.css
