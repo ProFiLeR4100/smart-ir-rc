@@ -5,17 +5,33 @@ load('api_mqtt.js');
 load('api_net.js');
 load('api_rpc.js');
 load("api_ir.js");
+load("api_sys.js");
+load('api_timer.js');
 
+let IR_MODE = {
+  RECEIVING: 0,
+  SENDING: 1
+};
+
+let currentIrMode = IR_MODE.RECEIVING;
 let led = Cfg.get('pins.led');
 let button = Cfg.get('pins.button');
 let topic = '/devices/' + Cfg.get('device.id') + '/events';
+let buttonBuffer = [];
 
-// print('LED GPIO:', led, 'button GPIO:', button);
-
+GPIO.set_mode(led, GPIO.MODE_OUTPUT);
 let ir = IR.Receiver.NEC.create(5, function(code) {
-    GPIO.toggle(led);
+    if (IR_MODE.RECEIVING !== currentIrMode) {
+      print('Removing IR self-fire.');
+      return;
+    }
+    // GPIO.write(led, 0);
     print("IR", code);
-    GPIO.toggle(led);
+    buttonBuffer.push({
+        timestamp: Sys.uptime(),
+        code: code
+    });
+    // GPIO.write(led, 1);
 }, null);
 
 // Monitor network connectivity.
@@ -34,13 +50,28 @@ Event.addGroupHandler(Net.EVENT_GRP, function(ev, evdata, arg) {
 }, null);
 
 RPC.addHandler('IRRemoteControl', function(args) {
-    GPIO.toggle(led);
+    currentIrMode = IR_MODE.SENDING;
+    // GPIO.write(led, 0);
     print("Receive Button: ", JSON.stringify(args));
     
     for(let index = 0; index<args.length; index++) {
       IR.Sender.NEC.pwm(4, args[index]);
     }
     
-    GPIO.toggle(led);
+    // GPIO.write(led, 1);
+    currentIrMode = IR_MODE.RECEIVING;
     return true;
+});
+
+Timer.set(3000 /* 3 sec */, Timer.REPEAT, function() {
+    if(buttonBuffer.length>10)
+        buttonBuffer = [];
+}, null);
+
+RPC.addHandler('IRGetLastButtons', function() {
+    // GPIO.write(led, 0);
+    let clone = JSON.parse(JSON.stringify(buttonBuffer));
+    buttonBuffer = [];
+    // GPIO.write(led, 1);
+    return clone;
 });

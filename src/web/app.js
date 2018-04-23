@@ -110,16 +110,28 @@ app
         }])
     .factory("RestService",["$http", "$log", function ($http, $log) {
         var factory = {};
-        var url = "/rpc/IRRemoteControl";
+        var url = "/rpc/";
 
         factory.sendIRButton = function (button) {
             var startTime = new Date().getTime();
             return $http({
                 method: "POST",
-                url: url,
+                url: url + "IRRemoteControl",
                 data: button
             }).then(function (response) {
                 logResponse(url, button, response, startTime);
+                return response;
+            });
+        };
+
+        factory.getLastIRButtons = function (lastPressedButton) {
+            var startTime = new Date().getTime();
+            return $http({
+                method: "POST",
+                url: url + "IRGetLastButtons",
+                data: lastPressedButton
+            }).then(function (response) {
+                logResponse(url, lastPressedButton, response, startTime);
                 return response;
             });
         };
@@ -137,9 +149,22 @@ app
 
         return factory;
     }])
-    .controller("MainController",['DEVICES', '$scope', function (DEVICES, $scope) {
+    .controller("MainController",['DEVICES', '$scope', '$interval', 'RestService', function (DEVICES, $scope, $interval, restService) {
         var $ctrl = this;
         $ctrl.devices = DEVICES;
+        $ctrl.dbgMessage= "";
+        $ctrl.buttonsPressed = [];
+
+        $interval(function () {
+            restService.getLastIRButtons({timestamp:0})
+                .then(function (response) {
+                    $ctrl.buttonsPressed = $ctrl.buttonsPressed.concat(response.data);
+                }, function (response) {
+                    console.log("Error:",response);
+                });
+        }, 1000);
+
+
     }])
     .component('rcButton', {
         templateUrl: "/rc-button.component.html",

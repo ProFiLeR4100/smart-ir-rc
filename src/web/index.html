@@ -8,9 +8,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <div ng-app="IRRemoteController"
-             class="">
+        <div ng-app="IRRemoteController">
             <div ng-controller="MainController as $ctrl">
+                <div class="button-row"
+                     ng-repeat="button in $ctrl.buttonsPressed | orderBy:'-timestamp' track by $index"
+                     ng-bind="button">
+                </div>
                 <select id="device-selector"
                         ng-model="$ctrl.selectedDevice"
                         ng-init="$ctrl.selectedDevice = $ctrl.devices[0]"
@@ -33,6 +36,7 @@
         <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>-->
         <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>-->
         <script src="https://code.angularjs.org/1.6.1/angular.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.js"></script>
         <script src="/bundle.min.js"></script>
     </body>
 </html>
