@@ -110,30 +110,30 @@ app
         }])
     .factory("RestService",["$http", "$log", function ($http, $log) {
         var factory = {};
-        var url = "/rpc/";
+        var restUrl = "/rpc/";
 
-        factory.sendIRButton = function (button) {
+        function httpRequest(url, method, data){
             var startTime = new Date().getTime();
             return $http({
-                method: "POST",
-                url: url + "IRRemoteControl",
-                data: button
+                method: method,
+                url: restUrl + url,
+                data: data
             }).then(function (response) {
-                logResponse(url, button, response, startTime);
+                logResponse(restUrl, data, response, startTime);
                 return response;
-            });
+            })
+        }
+
+        factory.getDevicesConfig = function () {
+            return httpRequest("GetDevicesConfig", "GET");
+        };
+
+        factory.sendIRButton = function (button) {
+            return httpRequest("IRRemoteControl", "POST", button);
         };
 
         factory.getLastIRButtons = function (lastPressedButton) {
-            var startTime = new Date().getTime();
-            return $http({
-                method: "POST",
-                url: url + "IRGetLastButtons",
-                data: lastPressedButton
-            }).then(function (response) {
-                logResponse(url, lastPressedButton, response, startTime);
-                return response;
-            });
+            return httpRequest("IRGetLastButtons", "GET");
         };
 
         function logResponse(url, data, response, startTime) {
