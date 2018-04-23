@@ -110,6 +110,6 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-htmlmin');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-browser-sync');
-    grunt.registerTask('build', ['clean:all', 'uglify:prod', 'htmlmin', 'copy:staticFiles']);
+    grunt.registerTask('build', ['clean:all', 'uglify:prod', 'htmlmin', 'less:compile', 'copy']);
     grunt.registerTask('continious-dev', ['build', 'browserSync:dev', 'watch']);
 };
