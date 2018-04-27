@@ -1,0 +1,89 @@
+{
+    "configurations": [
+        {
+            "name": "Mac",
+            "includePath": [
+                "/usr/include",
+                "/usr/local/include",
+                "${workspaceFolder}"
+            ],
+            "defines": [],
+            "intelliSenseMode": "clang-x64",
+            "browse": {
+                "path": [
+                    "/usr/include",
+                    "/usr/local/include",
+                    "${workspaceFolder}"
+                ],
+                "limitSymbolsToIncludedHeaders": true,
+                "databaseFilename": ""
+            },
+            "macFrameworkPath": [
+                "/System/Library/Frameworks",
+                "/Library/Frameworks"
+            ]
+        },
+        {
+            "name": "Linux",
+            "includePath": [
+                "/usr/include",
+                "/usr/local/include",
+                "${workspaceFolder}"
+            ],
+            "defines": [],
+            "intelliSenseMode": "clang-x64",
+            "browse": {
+                "path": [
+                    "/usr/include",
+                    "/usr/local/include",
+                    "${workspaceFolder}"
+                ],
+                "limitSymbolsToIncludedHeaders": true,
+                "databaseFilename": ""
+            }
+        },
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}",
+                "C:/Program Files (x86)/Microsoft Visual Studio/2017/Community/VC/Tools/MSVC/14.10.25017/include/*",
+                "C:/Program Files (x86)/Microsoft Visual Studio/2017/Community/VC/Tools/MSVC/14.10.25017/atlmfc/include/*",
+                "C:/Program Files (x86)/Windows Kits/10/Include/10.0.15063.0/um",
+                "C:/Program Files (x86)/Windows Kits/10/Include/10.0.15063.0/ucrt",
+                "C:/Program Files (x86)/Windows Kits/10/Include/10.0.15063.0/shared",
+                "C:/Program Files (x86)/Windows Kits/10/Include/10.0.15063.0/winrt",
+                "C:/Users/mysh0217/.mos/mongoose-os",
+                "C:/Users/mysh0217/.mos/libs",
+                "C:/Users/mysh0217/.mos/mongoose-os/fw/include",
+                "C:/Users/mysh0217/.mos/libs/rpc-common/include",
+                "C:/Users/mysh0217/.mos/libs/ir/include",
+                "C:/Users/mysh0217/.mos/libs/mqtt/include",
+                "C:/Users/mysh0217/.mos/mongoose-os/frozen"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "intelliSenseMode": "msvc-x64",
+            "browse": {
+                "path": [
+                    "${workspaceFolder}",
+                    "C:/Program Files (x86)/Microsoft Visual Studio/2017/Community/VC/Tools/MSVC/14.10.25017/include/*",
+                    "C:/Program Files (x86)/Microsoft Visual Studio/2017/Community/VC/Tools/MSVC/14.10.25017/atlmfc/include/*",
+                    "C:/Program Files (x86)/Windows Kits/10/Include/10.0.15063.0/um",
+                    "C:/Program Files (x86)/Windows Kits/10/Include/10.0.15063.0/ucrt",
+                    "C:/Program Files (x86)/Windows Kits/10/Include/10.0.15063.0/shared",
+                    "C:/Program Files (x86)/Windows Kits/10/Include/10.0.15063.0/winrt",
+                    "C:/Users/mysh0217/.mos/mongoose-os",
+                    "C:/Users/mysh0217/.mos/libs"
+                ],
+                "limitSymbolsToIncludedHeaders": true,
+                "databaseFilename": ""
+            },
+            "cStandard": "c11",
+            "cppStandard": "c++17"
+        }
+    ],
+    "version": 3
+}
