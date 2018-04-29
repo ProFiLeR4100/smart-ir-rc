@@ -52,13 +52,13 @@
                 "C:/Program Files (x86)/Windows Kits/10/Include/10.0.15063.0/ucrt",
                 "C:/Program Files (x86)/Windows Kits/10/Include/10.0.15063.0/shared",
                 "C:/Program Files (x86)/Windows Kits/10/Include/10.0.15063.0/winrt",
-                "C:/Users/mysh0217/.mos/mongoose-os",
-                "C:/Users/mysh0217/.mos/libs",
-                "C:/Users/mysh0217/.mos/mongoose-os/fw/include",
-                "C:/Users/mysh0217/.mos/libs/rpc-common/include",
-                "C:/Users/mysh0217/.mos/libs/ir/include",
-                "C:/Users/mysh0217/.mos/libs/mqtt/include",
-                "C:/Users/mysh0217/.mos/mongoose-os/frozen"
+                "C:/Users/Mykhailo/.mos/mongoose-os",
+                "C:/Users/Mykhailo/.mos/libs",
+                "C:/Users/Mykhailo/.mos/mongoose-os/fw/include",
+                "C:/Users/Mykhailo/.mos/libs/rpc-common/include",
+                "C:/Users/Mykhailo/.mos/libs/ir/include",
+                "C:/Users/Mykhailo/.mos/libs/mqtt/include",
+                "C:/Users/Mykhailo/.mos/mongoose-os/frozen"
             ],
             "defines": [
                 "_DEBUG",
@@ -75,8 +75,13 @@
                     "C:/Program Files (x86)/Windows Kits/10/Include/10.0.15063.0/ucrt",
                     "C:/Program Files (x86)/Windows Kits/10/Include/10.0.15063.0/shared",
                     "C:/Program Files (x86)/Windows Kits/10/Include/10.0.15063.0/winrt",
-                    "C:/Users/mysh0217/.mos/mongoose-os",
-                    "C:/Users/mysh0217/.mos/libs"
+                    "C:/Users/Mykhailo/.mos/mongoose-os",
+                    "C:/Users/Mykhailo/.mos/libs",
+                    "C:/Users/Mykhailo/.mos/mongoose-os/fw/include",
+                    "C:/Users/Mykhailo/.mos/libs/rpc-common/include",
+                    "C:/Users/Mykhailo/.mos/libs/ir/include",
+                    "C:/Users/Mykhailo/.mos/libs/mqtt/include",
+                    "C:/Users/Mykhailo/.mos/mongoose-os/frozen"
                 ],
                 "limitSymbolsToIncludedHeaders": true,
                 "databaseFilename": ""

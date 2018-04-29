@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "utility": "c"
+        "utility": "c",
+        "mgos_mqtt.h": "c"
     }
 }

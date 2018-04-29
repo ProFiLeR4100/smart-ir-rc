@@ -50,6 +50,10 @@ module.exports = function (grunt) {
             options: {
                 spawn: false
             },
+            staticJS: {
+                files: 'src/*.js',
+                tasks: ['copy:staticFiles']
+            },
             js: {
                 files: 'src/**/*.js',
                 tasks: ['uglify:prod']
