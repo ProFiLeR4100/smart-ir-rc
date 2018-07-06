@@ -1,139 +1,57 @@
-var app = angular.module("IRRemoteController", []);
+var app = angular.module("IRRemoteController", ["ngPatternRestrict"]);
 
 app
-    .constant('DEVICES', [{
-            id: 'TOSHIBA_TV',
-            name: 'Toshiba TV',
-            buttons: [
-                [
-                    {name: 'Source', icon: 'fa fa-sign-in fa-3x', action: [50145495]},
-                    {name: 'Mute', icon: 'fa fa-volume-off fa-3x', action: [50137335]},
-                    {name: 'I/O', icon: 'fa fa-power-off fa-3x', action: [50153655]}
-                ], [
-                    {name: '\\/', action: [50152635]},
-                    {name: 'Text', icon: 'fa fa-align-justify fa-2x', action: [50194455]},
-                    {name: 'Subtitle', icon: 'fa fa-comments-o fa-2x', action: [50147535]},
-                    {name: 'PiP', icon: 'fa fa-object-group fa-2x' , action: [50186295]}
-                ], [
-                    {name: '1', action: [50167935]},
-                    {name: '2', action: [50151615]},
-                    {name: '3', action: [50184255]}
-                ], [
-                    {name: '4', action: [50143455]},
-                    {name: '5', action: [50176095]},
-                    {name: '6', action: [50159775]}
-                ], [
-                    {name: '7', action: [50192415]},
-                    {name: '8', action: [50139375]},
-                    {name: '9', action: [50172015]}
-                ], [
-                    {name: 'AD', action: [50153145]},
-                    {name: '0', action: [50135295]},
-                    {name: 'A/D TV', action: [50143965]}
-                ], [
-                    {name: 'Vol+', icon: 'fa fa-volume-up fa-3x', action: [50157735]},
-                    {name: 'Info', icon: 'fa fa-info-circle fa-3x', action: [50161815]},
-                    {name: 'Page+', icon: 'fa fa-caret-right fa-3x fa-rotate-270', action: [50190375]}
-                ], [
-                    {name: 'Vol-', icon: 'fa fa-volume-down fa-3x', action: [50165895]},
-                    {name: 'Quick', icon: 'fa fa-magic fa-3x', action: [50185785]},
-                    {name: 'Page-', icon: 'fa fa-caret-right fa-rotate-90 fa-3x', action: [50198535]}
-                ], [
-                    {name: 'Guide', action: [50176605]},
-                    {name: 'Up', action: [50174055]},
-                    {name: 'Exit', action: [50184765]}
-                ], [
-                    {name: 'Left', action: [50152125]},
-                    {name: 'OK', action: [50168955]},
-                    {name: 'Right', action: [50135805]}
-                ], [
-                    {name: 'Menu', action: [50190885]},
-                    {name: 'Down', action: [50182215]},
-                    {name: 'Return', action: [50144985]}
-                ], [
-                    {name: 'Red', action: [50139885]},
-                    {name: 'Green', action: [50172525]},
-                    {name: 'Yellow', action: [50156205]},
-                    {name: 'Blue', action: [50188845]}
-                ], [
-                    {name: '?1?', action: [50146005]},
-                    {name: '?2?', action: [50186805]},
-                    {name: '?3?', action: [50180175]},
-                    {name: '?4?', action: [50178135]}
-                ],
-            ]
-        }, {
-            id: 'TV_BOX',
-            name: 'TV BOX',
-            buttons: [
-                [
-                    {name: 'I/O', action: [0x00, 0x00, 0x00]},
-                    null,
-                    {name: 'Mute', action: [0x00, 0x00, 0x00]}
-                ], [
-                    {name: '1', action: [0x00, 0x00, 0x00]},
-                    {name: '2', action: [0x00, 0x00, 0x00]},
-                    {name: '3', action: [0x00, 0x00, 0x00]}
-                ], [
-                    {name: '4', action: [0x00, 0x00, 0x00]},
-                    {name: '5', action: [0x00, 0x00, 0x00]},
-                    {name: '6', action: [0x00, 0x00, 0x00]}
-                ], [
-                    {name: '7', action: [0x00, 0x00, 0x00]},
-                    {name: '8', action: [0x00, 0x00, 0x00]},
-                    {name: '9', action: [0x00, 0x00, 0x00]}
-                ], [
-                    {name: 'FAV', action: [0x00, 0x00, 0x00]},
-                    {name: '0', action: [0x00, 0x00, 0x00]},
-                    {name: 'SAT', action: [0x00, 0x00, 0x00]}
-                ], [
-                    null,
-                    {name: 'UP', action: [0x00, 0x00, 0x00]},
-                    null
-                ], [
-                    {name: 'LEFT', action: [0x00, 0x00, 0x00]},
-                    {name: 'OK', action: [0x00, 0x00, 0x00]},
-                    {name: 'RIGHT', action: [0x00, 0x00, 0x00]}
-                ], [
-                    null,
-                    {name: 'DOWN', action: [0x00, 0x00, 0x00]},
-                    null
-                ],
-            ]
-        }, {
-            id: 'AIR_CONDITIONER',
-            name: 'Air Conditioner',
-            buttons: [
-                [{name: 'I/O', action: [0x00, 0x00, 0x00]}, null, null, null],
-                [{name: 'I/O', action: [0x00, 0x01, 0x00]}, null, null],
-            ]
-        }])
-    .factory("RestService",["$http", "$log", function ($http, $log) {
+    .config(['$httpProvider', function($httpProvider) {
+        if (!$httpProvider.defaults.headers.get) {
+            $httpProvider.defaults.headers.get = {};    
+        }
+
+        $httpProvider.defaults.headers.get['Cache-Control'] = 'no-cache';
+        $httpProvider.defaults.headers.get['Pragma'] = 'no-cache';
+    }])
+    .factory("RestService",["$http", "$log", "$q", function ($http, $log, $q) {
         var factory = {};
-        var restUrl = "/rpc/";
 
         function httpRequest(url, method, data){
             var startTime = new Date().getTime();
             return $http({
                 method: method,
-                url: restUrl + url,
+                url: url,
                 data: data
             }).then(function (response) {
-                logResponse(restUrl, data, response, startTime);
+                logResponse(url, data, response, startTime);
                 return response;
             })
         }
 
         factory.getDevicesConfig = function () {
-            return httpRequest("GetDevicesConfig", "GET");
+            return httpRequest("/rc-config.json", "GET");
+        };
+
+        factory.saveDevicesConfig = function (object) {
+            var objectJson = JSON.stringify(object);
+            var chunks = objectJson.match(/.{1,200}/g);
+            var promise = $q.all([]);
+            var first = chunks.length;
+            angular.forEach(chunks, function (chunk) {
+                promise = promise.then(function () {
+                    return httpRequest("/rpc/FS.Put", "POST", {
+                        "filename": "rc-config.json",
+                        "append": (first--)<chunks.length,
+                        "data": btoa(chunk)
+                    });
+                });
+            });
+            
+            return promise;
         };
 
         factory.sendIRButton = function (button) {
-            return httpRequest("IRRemoteControl", "POST", button);
+            return httpRequest("/rpc/IRRemoteControl", "POST", button);
         };
 
         factory.getLastIRButtons = function (lastPressedButton) {
-            return httpRequest("IRGetLastButtons", "GET");
+            return httpRequest("/rpc/IRGetLastButtons", "GET");
         };
 
         function logResponse(url, data, response, startTime) {
@@ -149,20 +67,104 @@ app
 
         return factory;
     }])
-    .controller("MainController",['DEVICES', '$scope', '$interval', 'RestService', function (DEVICES, $scope, $interval, restService) {
+    .controller("MainController",['$scope', '$interval', 'RestService', function ($scope, $interval, restService) {
         var $ctrl = this;
-        $ctrl.devices = DEVICES;
-        $ctrl.dbgMessage= "";
+        $ctrl.state = {
+            page: 'USAGE',
+            isLoading: true,
+            isError: false,
+            isTimeout: false
+        };
+        $ctrl.devices = [];
         $ctrl.buttonsPressed = [];
+        $ctrl.dbgMessage= "";
 
-        $interval(function () {
-            restService.getLastIRButtons({timestamp:0})
-                .then(function (response) {
-                    $ctrl.buttonsPressed = $ctrl.buttonsPressed.concat(response.data);
-                }, function (response) {
-                    console.log("Error:",response);
+        restService
+            .getDevicesConfig()
+            .then(function(response) {
+                $ctrl.devices = response.data;
+                selectDevice($ctrl.devices[0]);
+            }, function(response) {
+                console.error(response);
+            })
+            .finally(function(){
+                $ctrl.state.isLoading = false;
+            });    
+        
+        $ctrl.useDevice = function(device) {
+            selectDevice(device);
+            $ctrl.state.page = "USAGE";
+        };
+
+        $ctrl.configureDevice = function(device) {
+            selectDevice(device);
+            $ctrl.state.page = "CONFIGURE";
+        };
+
+        function selectDevice(device) {
+            $ctrl.selectedDevice = device;
+        }
+
+        $ctrl.moveObject = function(array, start, delta) {
+            var newIndex = start + delta;
+            while (start < 0) {
+                start += array.length;
+            }
+            while (newIndex < 0) {
+                newIndex += array.length;
+            }
+            if (newIndex >= array.length) {
+                var k = newIndex - array.length + 1;
+                while (k--) {
+                    array.push(undefined);
+                }
+            }
+            array.splice(newIndex, 0, array.splice(start, 1)[0]);
+        };
+
+        $ctrl.addRow = function (index) {
+            var arr = $ctrl.selectedDevice.buttons;
+            arr.splice(index, 0, []);
+        };
+
+        $ctrl.removeRow = function (index) {
+            var arr = $ctrl.selectedDevice.buttons;
+            arr.splice(index, 1);
+        };
+
+        $ctrl.addButton = function (buttonRow) {
+            var arr = $ctrl.selectedDevice.buttons;
+            buttonRow.push({});
+        };
+
+        $ctrl.removeButton = function (buttonRow) {
+            buttonRow.pop();
+        };
+
+        $ctrl.saveChanges = function () {
+            $ctrl.state.isLoading = true;
+            restService
+                .saveDevicesConfig($ctrl.devices)
+                .then(function (response){
+                    console.log('success');
+                }, function(){
+
+                })
+                .finally(function() {
+                    $ctrl.state.isLoading = false;
                 });
-        }, 1000);
+        };
+        
+        
+
+        // $interval(function () {
+        //     restService.getLastIRButtons()
+        //         .then(function (response) {
+        //             $ctrl.buttonsPressed = $ctrl.buttonsPressed.concat(response.data);
+        //         }, function (response) {
+        //             console.log("Error:",response);
+        //         });
+        // }, 1000);
 
 
     }])
@@ -173,29 +175,68 @@ app
         bindings: {
             button: '<'
         }
+    })
+    .component('rcButtonConfigure', {
+        templateUrl: "/rc-button-configure.component.html",
+        controller: ["RestService", "$element", "$window", "$timeout", "$log", "$scope", RcButtonConfigureController],
+        controllerAs: "$ctrl", 
+        bindings: {
+            button: '='
+        }
     });
 function RcButtonController(restService, $element, $window, $timeout, $log) {
-    var $self = this;
-    $self.processing = false;
+    var $ctrl = this;
+    $ctrl.processing = false;
 
     $element.on("click", function () {
-        if($self.processing) {
+        if($ctrl.processing || $ctrl.button.hidden) {
             return;
         }
 
-        $self.processing = true;
+        $ctrl.processing = true;
         $element.addClass('_focus');
 
-        restService.sendIRButton($self.button.action)
+        restService.sendIRButton($ctrl.button.action)
             .then(function (response) {
                 $log.log("IR command sent: ", response);
             }, function (response) {
                 $log.log("Failed to send IR command: ", response);
             }).finally(function () {
                 $timeout(function () {
-                    $self.processing = false;
+                    $ctrl.processing = false;
                     $element.removeClass('_focus');
                 }, 150);
             });
     });
+}
+function RcButtonConfigureController(restService, $element, $window, $timeout, $log, $scope) {
+    var $ctrl = this;
+    var actionPattern = /^(\d+[,]{0,1}){0,}$/;
+    var prevAction = {};
+
+    $ctrl.$onInit = function() {
+        initActionString();
+    };
+
+    $ctrl.$doCheck = function() {
+        if(!angular.equals($ctrl.button.action, prevAction)) {
+            initActionString();
+        }
+    };
+
+    function initActionString() {
+        prevAction = angular.copy($ctrl.button.action);
+        $ctrl.actionString = $ctrl.button.action.join(',');
+    }
+
+    $ctrl.recalcAction = function () {
+        // avoid run before symbols are replaced
+        if(!$ctrl.actionString.match(actionPattern))
+            return;
+
+        $ctrl.button.action = $ctrl.actionString
+                                .replace(/\,{2,}/gm, ",")
+                                .replace(/(^\,+|\,+$)/gm, "")
+                                .split(',').map(function(item){ return Number(item.trim()); });
+    };
 }

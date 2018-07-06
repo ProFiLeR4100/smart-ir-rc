@@ -4,14 +4,14 @@
 module.exports = function (grunt) {
     var configServer = {
         port: 8384,
-        path: "./fs/web/"
+        path: "./fs/"
     };
 
     var config = {
         less: {
             compile: {
                 files: {
-                    'src/styles/styles.css': 'src/styles/styles.less'
+                    'resources/styles/styles.css': 'resources/styles/styles.less'
                 }
             }
         },
@@ -27,7 +27,7 @@ module.exports = function (grunt) {
                 },
                 files: [{
                     expand: true,
-                    cwd: 'src',
+                    cwd: 'resources/web',
                     src: ['**/*.html'],
                     dest: 'fs'
                 }]
@@ -40,8 +40,8 @@ module.exports = function (grunt) {
                     mangle: false
                 },
                 files: {
-                    'fs/web/bundle.min.js': [
-                        'src/web/**/*.js'
+                    'fs/bundle.min.js': [
+                        'resources/**/*.js'
                     ]
                 }
             }
@@ -50,43 +50,43 @@ module.exports = function (grunt) {
             options: {
                 spawn: false
             },
-            staticJS: {
-                files: 'src/*.js',
+            configs: {
+                files: 'resources/*.json',
                 tasks: ['copy:staticFiles']
             },
             js: {
-                files: 'src/**/*.js',
+                files: 'resources/**/*.js',
                 tasks: ['uglify:prod']
             },
             html: {
-                files: 'src/**/*.html',
+                files: 'resources/**/*.html',
                 tasks: ['htmlmin']
             },
             less: {
-                files: 'src/styles/*.less',
+                files: 'resources/styles/*.less',
                 tasks: ['less:compile', 'copy:styles']
             }
         },
         copy: {
             staticFiles: {
                 files: [{
-                    cwd: 'src',
+                    cwd: 'resources',
                     expand: true,
-                    src: ['*.js'],
+                    src: ['*.json'],
                     dest: 'fs'
                 }, {
-                    cwd: 'src/img',
+                    cwd: 'resources/img',
                     expand: true,
                     src: ['*.png'],
-                    dest: 'fs/web'
+                    dest: 'fs'
                 }]
             },
             styles: {
                 files: [{
-                    cwd: 'src/styles',
+                    cwd: 'resources/styles',
                     expand: true,
                     src: ['*.css'],
-                    dest: 'fs/web'
+                    dest: 'fs'
                 }]
             }
         },

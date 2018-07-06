@@ -1,0 +1,8 @@
+<div class="rc-button_container">
+    <div class="button">
+        <div>Hidden:<br><input type="checkbox" ng-model="$ctrl.button.hidden"></div>
+        <div>Name:<br><input type="text" ng-model="$ctrl.button.name"></div>
+        <div>Icon:<br><input type="text" ng-model="$ctrl.button.icon"></div>
+        <div>Action:<br><input type="text" ng-model="$ctrl.actionString" ng-change="$ctrl.recalcAction()" ng-pattern-restrict="^(\d+[,]{0,1}){0,}$"></div>
+    </div>
+</div>

@@ -2,39 +2,97 @@
     <head>
         <meta charset="UTF-8">
         <link href="/styles.css" rel="stylesheet">
-        <!--<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">-->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
         <div ng-app="IRRemoteController">
-            <div ng-controller="MainController as $ctrl">
-                <div class="button-row"
-                     ng-repeat="button in $ctrl.buttonsPressed | orderBy:'-timestamp' track by $index"
-                     ng-bind="button">
+            <div ng-controller="MainController as $ctrl" class="main-wrapper">
+                <nav class="navbar navbar-default navbar-fixed-top">
+                    <div class="container">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            <a class="navbar-brand" href="javascript:void(0);">Smart IR RC</a>
+                        </div>
+                        <div id="navbar" class="navbar-collapse collapse">
+                            <ul class="nav navbar-nav navbar-right">
+                                <li class="text-center"><button ng-if="$ctrl.state.page==='CONFIGURE'" ng-click="$ctrl.saveChanges()" class="btn btn-success save-changes-button">Save Changes</button></li>
+                                <li class="dropdown">
+                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span>Devices</span> <span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li ng-repeat="device in $ctrl.devices track by $index">
+                                            <a href="javascript:void(0);" ng-click="$ctrl.useDevice(device)" ng-bind="device.name" class="hidden-xs"></a>
+                                            <a href="javascript:void(0);" ng-click="$ctrl.useDevice(device)" ng-bind="device.name" class="visible-xs" data-toggle="collapse" data-target=".navbar-collapse"></a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown">
+                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span>Configure</span> <span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li ng-repeat="device in $ctrl.devices track by $index">
+                                            <a href="javascript:void(0);" ng-click="$ctrl.configureDevice(device)" ng-bind="device.name" class="hidden-xs"></a>
+                                            <a href="javascript:void(0);" ng-click="$ctrl.configureDevice(device)" ng-bind="device.name" class="visible-xs" data-toggle="collapse" data-target=".navbar-collapse"></a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li><a href="http://bit.ly/2KWjamc" target="_blank">About</a></li>
+                            </ul>
+                        </div><!--/.nav-collapse -->
+                    </div>
+                </nav>
+                
+                <div class="navbar-margin">
+                    <!-- used to init the Font Awesome before user viewed first icon -->
+                    <i class="fa fa-chevron-down" aria-hidden="true"></i>
                 </div>
-                <select id="device-selector"
-                        ng-model="$ctrl.selectedDevice"
-                        ng-init="$ctrl.selectedDevice = $ctrl.devices[0]"
-                        ng-options="device.name for device in $ctrl.devices"
-                        ng-change="$ctrl.selectElement($ctrl.selectedDevice)"></select>
-
-                <div class="button-holder">
-                    <h1 ng-bind="$ctrl.selectedDevice.name"></h1>
+                <div class="button-holder" ng-if="$ctrl.state.page==='USAGE'">
                     <div class="button-row"
                          ng-repeat="buttonRow in $ctrl.selectedDevice.buttons track by $index">
                         <rc-button button="button"
-                                   ng-class="{ '_deactivated' : !button }"
+                                   ng-class="{ '_deactivated' : !button || button.hidden }"
                                    ng-repeat="button in buttonRow track by $index"></rc-button>
                     </div>
                 </div>
+                <div class="button-holder button-configurator" ng-if="$ctrl.state.page==='CONFIGURE'">
+                    <div ng-repeat="buttonRow in $ctrl.selectedDevice.buttons track by $index">
+                        <div>
+                            <div class="button-row-controls _left hidden-xs">
+                                <button class="button-row-control btn btn-default" ng-click="$ctrl.addRow($index)"><i class="fa fa-bars" aria-hidden="true"></i> <i class="fa fa-plus" aria-hidden="true"></i></button>
+                                <button class="button-row-control btn btn-default" ng-click="$ctrl.moveObject($ctrl.selectedDevice.buttons, $index, -1)"><i class="fa fa-bars" aria-hidden="true"></i> <i class="fa fa-chevron-up" aria-hidden="true"></i></button>
+                                <button class="button-row-control btn btn-default" ng-click="$ctrl.moveObject($ctrl.selectedDevice.buttons, $index, +1)"><i class="fa fa-bars" aria-hidden="true"></i> <i class="fa fa-chevron-down" aria-hidden="true"></i></button>
+                                <button class="button-row-control btn btn-default" ng-click="$ctrl.removeRow($index)"><i class="fa fa-bars" aria-hidden="true"></i> <i class="fa fa-trash" aria-hidden="true"></i></button>
+                            </div>
+                            <rc-button-configure button="button" ng-repeat="button in buttonRow track by $index"></rc-button-configure>
+                            <div class="button-row-controls _right hidden-xs">
+                                <button class="button-row-control btn btn-default" ng-click="$ctrl.addButton(buttonRow)"><i class="fa fa-square-o" aria-hidden="true"></i> <i class="fa fa-plus" aria-hidden="true"></i></button>
+                                <button class="button-row-control btn btn-default" ng-click="$ctrl.moveObject(buttonRow, 0, -1)"><i class="fa fa-square-o" aria-hidden="true"></i> <i class="fa fa-chevron-left" aria-hidden="true"></i></button>
+                                <button class="button-row-control btn btn-default" ng-click="$ctrl.moveObject(buttonRow, buttonRow.length-1, -(buttonRow.length-1))"><i class="fa fa-square-o" aria-hidden="true"></i> <i class="fa fa-chevron-right" aria-hidden="true"></i></button>
+                                <button class="button-row-control btn btn-default" ng-click="$ctrl.removeButton(buttonRow, $index)"><i class="fa fa-square-o" aria-hidden="true"></i> <i class="fa fa-trash" aria-hidden="true"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="loader-wrapper" ng-class="{'_hidden':!$ctrl.state.isLoading}">
+                <div class="cssload-thecube">
+                    <div class="cssload-cube cssload-c1"></div>
+                    <div class="cssload-cube cssload-c2"></div>
+                    <div class="cssload-cube cssload-c4"></div>
+                    <div class="cssload-cube cssload-c3"></div>
+                </div>
             </div>
         </div>
-
         <script src="http://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-        <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>-->
-        <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/js-polyfills/0.1.42/polyfill.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
         <script src="https://code.angularjs.org/1.6.1/angular.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.js"></script>
         <script src="/bundle.min.js"></script>

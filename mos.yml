@@ -15,7 +15,6 @@ tags:
 
 filesystem:
   - fs
-  - fs/web
 
 sources:
   - src
@@ -25,6 +24,8 @@ config_schema:
   - ["pins.led", "i", 2, {title: "LED GPIO pin"}]
   - ["pins.receiver", "i", 14, {title: "IR Receiver GPIO pin"}]
   - ["pins.sender", "i", 12, {title: "IR Emitter GPIO pin"}]
+  - ["rc", "o", {title: "Remote Control Config"}]
+  - ["rc.devices_config", "s", "[]", {title: "Remote Control Devices Config"}]
 
 libs:
   - origin: https://github.com/mongoose-os-libs/ota-shadow
